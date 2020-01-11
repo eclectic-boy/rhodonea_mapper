@@ -11,15 +11,20 @@ repos:
         args: ['--maxkb=1000']
     -   id: flake8
         exclude: >
-            (?x)^()$
-
--   repo: https://github.com/pre-commit/mirrors-pylint
-    rev: v2.4.4  # Use the sha / tag you want to point at
-    hooks:
-    -   id: pylint
-        args: [
-            '--disable=import-error,missing-module-docstring,missing-class-docstring,missing-function-docstring,
-            too-few-public-methods'
-        ]
-        exclude: >
-            (?x)^()$
+            (?x)^(
+                rhodonea_mapper/migrations/.+
+            )$
+#
+#-   repo: https://github.com/pre-commit/mirrors-pylint
+#    rev: v2.4.4  # Use the sha / tag you want to point at
+#    hooks:
+#    -   id: pylint
+#        args: [
+#            '--disable=import-error,missing-module-docstring,missing-class-docstring,missing-function-docstring,
+#            too-few-public-methods'
+#        ]
+#        exclude: >
+#            (?x)^(
+#                rhodonea_mapper/migrations/.+ |
+#                runtests.py
+#            )$

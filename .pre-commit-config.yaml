@@ -11,7 +11,9 @@ repos:
         args: ['--maxkb=1000']
     -   id: flake8
         exclude: >
-            (?x)^()$
+            (?x)^(
+                rhodonea_mapper/migrations/.+
+            )$
 
 -   repo: https://github.com/pre-commit/mirrors-pylint
     rev: v2.4.4  # Use the sha / tag you want to point at
@@ -22,4 +24,7 @@ repos:
             too-few-public-methods'
         ]
         exclude: >
-            (?x)^()$
+            (?x)^(
+                rhodonea_mapper/migrations/.+ |
+                runtests.py
+            )$

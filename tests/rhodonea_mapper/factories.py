@@ -18,7 +18,7 @@ def get_random_polygon(nodes=4):
     return Polygon(LinearRing(*points))
 
 
-def get_random_centered_envelope(point=None, radius=None):
+def get_centered_envelope(point=None, radius=None):
     if not point:
         point = Point(float(fake.longitude()), float(fake.latitude()))
     return point.buffer(
@@ -30,6 +30,7 @@ class LayerFactory(DjangoModelFactory):
     class Meta:
         model = Layer
 
+    title = factory.Faker('sentence', nb_words=6, locale='en_GB')
     notes = factory.Faker('paragraph', nb_sentences=3)
 
 
@@ -42,10 +43,13 @@ class RhodoneaFactory(DjangoModelFactory):
     point = factory.LazyFunction(
         lambda: Point(float(fake.longitude()), float(fake.latitude()))
     )
-    r = factory.Faker('random_number')
-    n = factory.Faker('random_number')
-    d = factory.Faker('random_number')
-    rotation = factory.Faker('random_number')
-    nodes_count = factory.Faker('random_number')
+    r = factory.Faker(
+        'pydecimal',
+        left_digits=4, right_digits=2, positive=True, min_value=1000
+    )
+    n = factory.Faker('random_int', min=1, max=20)
+    d = factory.Faker('random_int', min=1, max=20)
+    rotation = factory.Faker('pydecimal', left_digits=3, right_digits=2)
+    nodes_count = factory.Faker('random_int', min=10, max=1000)
     stroke_color = factory.Faker('hex_color')
-    stroke_weight = factory.Faker('random_number')
+    stroke_weight = factory.Faker('random_int', min=1, max=10)

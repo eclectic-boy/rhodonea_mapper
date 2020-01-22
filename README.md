@@ -47,6 +47,7 @@ beautiful [rhodoneas](https://en.wikipedia.org/wiki/Rose_(mathematics\)) on
         ),
         'DEFAULT_PERMISSION_CLASSES': (),
         'PAGINATE_BY': 10,
+        'COERCE_DECIMAL_TO_STRING': False,
     }
     ```
 

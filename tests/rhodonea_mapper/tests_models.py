@@ -8,7 +8,7 @@ from rhodonea_mapper.models import Rhodonea, Layer
 from tests.rhodonea_mapper.factories import (
     LayerFactory,
     RhodoneaFactory,
-    get_random_centered_envelope,
+    get_centered_envelope,
 )
 
 
@@ -24,7 +24,7 @@ class LayerTests(TestCase):
     @patch.object(Rhodonea, 'build_envelope', autospec=True)
     def test_set_envelope(self, build_envelope):
         def build_envelope_mock(self):
-            return get_random_centered_envelope(self.point, 10)
+            return get_centered_envelope(self.point, 10)
         build_envelope.side_effect = build_envelope_mock
 
         layer = LayerFactory()
@@ -54,7 +54,7 @@ class RhodoneaTests(TestCase):
     def test_build_envelope(self, from_bbox, fwd, set_envelope):
         fwd.return_value = (10, 20)
 
-        geom = get_random_centered_envelope()
+        geom = get_centered_envelope()
         from_bbox.return_value = geom
 
         rh = RhodoneaFactory()

@@ -25,6 +25,7 @@ class Layer(TimeStampedModelGis):
     Model representing a set of Rhodonea objects hence a specific set of
     geometries to show on thr map going alongside a brief description.
     '''
+    title = models.CharField('Name', max_length=1000)
     envelope = models.PolygonField('Bounding box', blank=True, null=True)
     overlays_count = models.IntegerField('Overlays counter', default=0)
     notes = models.TextField('Notes', blank=True, null=True)
@@ -55,15 +56,15 @@ class Rhodonea(TimeStampedModelGis):
     name = models.CharField('Name', max_length=1000)
     notes = models.TextField('Notes', blank=True, null=True)
     point = models.PointField('Point')
-    r = models.FloatField('R')
-    n = models.FloatField('n')
-    d = models.FloatField('d')
-    rotation = models.FloatField('Rotation')
+    r = models.DecimalField('R', decimal_places=2, max_digits=12)
+    n = models.IntegerField('n')
+    d = models.IntegerField('d')
+    rotation = models.DecimalField('Rotation', decimal_places=2, max_digits=5)
     nodes_count = models.IntegerField('Nodes Count')
     stroke_color = models.CharField(
         'Stroke color', max_length=10, default='#000000'
     )
-    stroke_weight = models.FloatField('Stroke weight', default=1.0)
+    stroke_weight = models.IntegerField('Stroke weight', default=1)
 
     class Meta:
         verbose_name = 'Rhodonea'

@@ -1,0 +1,308 @@
+html {
+    font-size: 12pt;
+}
+
+.hidden {
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+a, a:visited, a:active, a:link {
+  color: #311807;
+  text-decoration: none;
+}
+
+a:hover, a:visited:hover, a:active:hover, a:link:hover {
+  text-decoration: none;
+}
+
+#main_container {
+  margin-top: 3rem;
+}
+
+#sidebar {
+  background: rgba(49, 24, 7, 0.5);
+  padding: 0.5rem 0;
+}
+
+#sidebar .sidebar_element .buttons {
+  text-align: right;
+  font-size: 1.2rem;
+}
+
+.alert {
+  margin: 0.5rem;
+  clear: both;
+  font-size: 0.8rem;
+}
+
+#controls {
+  text-align: center;
+}
+
+#controls div {
+    float: left;
+}
+
+#controls div:first-child, #controls div:last-child {
+  width: 10%;
+  text-align: center;
+  padding: 0.1rem;
+}
+
+#controls div.center {
+  width: 80%;
+}
+
+#showDrawer .handle {
+  margin: 0.2rem 0;
+  width: 25%;
+  opacity: 0.75;
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
+
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+#showDrawer .handle.rotatingLoader {
+  -webkit-animation: rotating 3s linear infinite;
+  animation: rotating 3s linear infinite;
+}
+
+#showDrawer:hover .handle, #showDrawer.active .handle {
+  opacity: 1;
+}
+
+#map {}
+
+#drawer {
+  overflow: auto;
+  width: 200%;
+}
+
+#drawer .column {
+  float: left;
+  width: 50%;
+  padding: 1rem;
+}
+
+#drawer .buttons a:hover {
+  color: white;
+}
+
+#drawer #addItem {
+  font-size: 1.5rem;
+}
+
+#drawer #addItem:hover {
+}
+
+#list {
+  overflow: auto;
+  font-size: 0.8rem;
+}
+
+#list.slideLeft {
+  transition: 1s;
+  -webkit-transition: 1s;
+  margin-left: -100%;
+}
+
+#list.slideRight {
+  transition: 1s;
+  -webkit-transition: 1s;
+  margin-left: 0;
+}
+
+#list .featureName {
+  font-style: italic;
+  display: block;
+  float: left;
+  width: 90%;
+}
+
+#list .list-group-item {
+  padding: 0.5rem;
+}
+
+#list .featureName.used {
+  font-style: normal;
+  font-weight: bold;
+}
+
+#list .badge {
+  background: none;
+  color: #311807;
+}
+
+#list .badge:hover {
+  background: #311807;
+  color: white;
+}
+
+#list textarea[name='title'] {
+  max-width: 100%;
+  width: 100%;
+  min-height: 6rem;
+  background: transparent;
+  color: white;
+  font-size: 0.8rem !important;
+}
+
+#list textarea[name='title']::-webkit-input-placeholder {
+  color: white;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+#list textarea[name='title']:-moz-placeholder {
+  color: white;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+#list textarea[name='title']::-moz-placeholder {
+  color: white;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+#list textarea[name='title']:-ms-input-placeholder {
+  color: white;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+#form .input-group {
+  width: 100%;
+}
+
+#form .input-group * {
+  /*font-size: 1rem;*/
+}
+
+#form .input-group .input-group-addon {
+  color: white;
+}
+
+#form .input-group .input-group-addon:first-child {
+  width: 30%;
+  padding: 0;
+}
+
+#form .input-group .input-group-addon:last-child {
+  width: 10%;
+  padding: 0;
+  text-align: center;
+}
+
+#form .coordinateLock:hover {
+  color: white;
+}
+
+#timeline {
+  clear: both;
+  width: 100%;
+  overflow: auto;
+}
+
+#timeline .title {
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  padding-top: 1rem;
+}
+
+#timeline .empty {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.8rem;
+  width: 75%;
+  margin: auto;
+  margin-top: 3rem;
+  color: white;
+}
+
+#timeline #items {
+  width: 100%;
+}
+
+#timeline #items .item {
+  margin: 1em 0.5rem;
+  font-size: 0.85rem;
+}
+
+#timeline #items .item .card-body {
+  padding: 0.75rem;
+}
+
+#timeline #items .item .card-footer {
+  padding: 0.1rem;
+}
+
+#timeline #items .item .card-footer table {
+  width: 100%;
+  height: 100%;
+}
+
+#timeline #items .item .card-footer table td {
+  vertical-align: middle;
+  line-height: normal;
+  text-align: center;
+  font-size: 0.7rem;
+}
+
+#timeline #items .item .flyTo {
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
+
+#timeline #items .item .switch {
+  font-size: 0.7rem !important;
+}
+
+#timeline #items .item .toggle {
+  border: 1px solid #311807;
+}
+
+#timeline #items .item .btn {
+  font-size: 0.82rem;
+  padding: 0;
+  cursor: pointer;
+}
+
+#timeline #more {
+  width: 100%;
+  padding: 1em 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+#timeline #more a {
+  color: white !important;
+}
+
+#showHelp {
+  color: white;
+  cursor: pointer;
+}
+
+#helpModal .modal-body a, #helpModal .modal-body a:visited, #helpModal .modal-body a:active, #helpModal .modal-body a:link {
+  text-decoration: underline;
+}
+
+#helpModal .modal-body a:hover, #helpModal .modal-body a:visited:hover, #helpModal .modal-body a:active:hover, #helpModal .modal-body a:link:hover {
+  color: #311807;
+}
+
+#helpModal .modal-header {
+    display: block;
+    text-align: center !important;
+}

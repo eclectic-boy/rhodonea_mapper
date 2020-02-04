@@ -33,7 +33,8 @@ class LayersViewSetDetailTests(TestCase):
 
     @patch.object(LayerDetailSerializer, 'data', new_callable=PropertyMock)
     def test(self, data):
-        layer = LayerFactory()
+        overlays_count = 10
+        layer = LayerFactory(overlays_count=overlays_count)
         RhodoneaFactory(layer=layer)
         RhodoneaFactory(layer=layer)
         RhodoneaFactory(layer=layer)
@@ -47,6 +48,9 @@ class LayersViewSetDetailTests(TestCase):
             str(data()),
             response.json()
         )
+
+        layer.refresh_from_db()
+        self.assertEqual(overlays_count + 1, layer.overlays_count)
 
     def test_not_found(self):
         response = self.client.get(reverse('layer-detail', args=[123]))

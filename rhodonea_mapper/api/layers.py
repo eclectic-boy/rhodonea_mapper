@@ -32,3 +32,8 @@ class LayersViewSet(
         if self.action == 'list':
             return LayerSerializer
         return LayerDetailSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.add_overlay()
+        return super().retrieve(request, *args, **kwargs)

@@ -110,27 +110,22 @@
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">Name</span>
                             <input type="text" name="name" class="form-control" placeholder="My Rhodonea" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="Radius in meters of this rhodonea. Type a higher value for a larger shape" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">R</span>
                             <input type="number" name="r" class="form-control" value="1000" step="1" placeholder="Circle radius" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="`n` parameter for this rhodonea. Combined to the `d` parameter you can get a particular shape" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">n</span>
                             <input type="number" name="n" class="form-control" value="1" step="1" placeholder="n parameter" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="`d` parameter for this rhodonea. Combined to the `n` parameter you can get a particular shape" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">d</span>
                             <input type="number" name="d" class="form-control" value="1" step="1" placeholder="d parameter" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="Longitude of the centre of this rhodonea" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Lng</span>
                             <input type="number" name="lng" class="form-control" step="0.000001" placeholder="Center longitude" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                             <span class="input-group-addon">
                                 <a href="javascript:void(0);" title="Lock/unlock the coordinates"><i class="fa coordinateLock fa-unlock-alt"></i></a>
                             </span>
@@ -138,7 +133,6 @@
                         <div class="input-group input-group-sm" title="Latitude of the centre of this rhodonea" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Lat</span>
                             <input type="number" name="lat" class="form-control" step="0.000001" placeholder="Center latitude" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                             <span class="input-group-addon">
                                 <a href="javascript:void(0);" title="Lock/unlock the coordinates"><i class="fa coordinateLock fa-unlock-alt"></i></a>
                             </span>
@@ -146,22 +140,18 @@
                         <div class="input-group input-group-sm"  title="Number of discretization nodes. Type a higher number for a more realistic shape" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Nodes</span>
                             <input type="number" name="nodes_count" class="form-control" value="1000" min="0" step="1" placeholder="Nodes number" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm"  title="Rotation in grades to apply to this rhodonea. The angle is computed clock-wise" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Rotation</span>
                             <input type="number" name="rotation" class="form-control" value="0" step="1" placeholder="Rotation" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="Color of this rhodonea" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Color</span>
                             <input type="color" name="strokeColor" class="form-control" value="#311807" placeholder="Radius of the circle" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                         <div class="input-group input-group-sm" title="Thickness of the stroke in pixels" data-toggle="tooltip" data-placement="top">
                             <span class="input-group-addon">Weight</span>
                             <input type="number" name="strokeWeight" class="form-control" value="2" min="0" step="1" placeholder="Weight" required>
-{#                            <div class="invalid-feedback">This field is required</div>#}
                         </div>
                     </form>
                 </div>

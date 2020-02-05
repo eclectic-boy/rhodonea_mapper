@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: Rhodonea Mapper API
+  description: Documentation of the REST API provided by the application [Rhodonea Mapper](https://github.com/eclectic-boy/rhodonea_mapper).
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /layers:
+    get:
+      summary: Returns a paginated (offset based) list of layer objects.
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/offsetParam'
+        - in: query
+          name: in_bbox
+          schema:
+            type: string
+          required: false
+          description: |
+            Bounding box used to filter the layers which must fall within.
+            The format is as follows:
+            "[\<SW corner longitude\>,\<SW corner latitude\>,\<NE corner longitude\>,\<NE corner latitude\>]"
+            e.g:
+            "-0.17989009570311687,51.46835015992083,-0.05629390429686687,51.55134204486436".
+
+      responses:
+        '200':
+          description: A paginated list of layers
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/PaginationBase'
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Layer'
+    post:
+      summary: Creates a new layer with associated rhodonea objects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LayerDetails'
+      responses:
+        '201':
+          description: The new layer has been succesfully created.
+        '400':
+          description: Validation errors have arisen.
+
+  /layers/{layerId}:
+    get:
+      summary: Returns the details of a layers.
+      parameters:
+        - in: path
+          name: layerId
+          schema:
+            type: integer
+          required: true
+          description: Numeric id of the layer.
+      responses:
+        '200':
+          description: The details of a layers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LayerDetailsForRead'
+
+components:
+  parameters:
+    offsetParam:
+      in: query
+      name: offset
+      schema:
+        type: integer
+      required: false
+      description: |
+        The id of the last item currently shown in the UI e.g. the fetched elements will have their ID strictly
+        greater than this number. Default value is 0.
+
+    limitParam:
+      in: query
+      name: limit
+      schema:
+        type: integer
+      required: false
+      description: The maximum number of elements to include in a single page. Default value is 10 and max value 50.
+
+  schemas:
+    PaginationBase:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of items found
+        previous:
+          type: string
+          format: uri
+          description: Url pointing to the previous page of this current page if not the first, null otherwise.
+        next:
+          type: string
+          format: uri
+          description: Url pointing to the following page of this current page if not the last, null otherwise.
+        results:
+          type: array
+          items:
+            type: object
+          description: List of elements contained in this current page
+
+    RhodoneaDetails:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type: string
+        point:
+          type: object
+          format: GeoJSON
+          description: Loaded GeoJSON rapresentation of a point
+        r:
+          type: number
+          format: float
+          description: Radius in meters rapresenting the extension of the geometry
+        n:
+          type: integer
+          description: n parameter of the Rhodonea formula
+        d:
+          type: integer
+          description: d parameter of the Rhodonea formula
+        rotation:
+          type: number
+          format: float
+          description: Rotation of the Rhodonea geometry around its centre
+        nodes_count:
+          type: integer
+          description: Number of total nodes used to draw (i.e. discretise) the geometry
+        stroke_color:
+          type: string
+          format: hex-color-code
+          description: Hex colour code
+        stroke_weight:
+          type: integer
+          description: Weight of the stroke in pixels
+
+    RhodoneaForRead:
+      allOf:
+        - $ref: '#/components/schemas/RhodoneaDetails'
+        - type: object
+          properties:
+            id:
+              type: integer
+            created:
+              type: string
+              format: date-time
+
+    LayerBase:
+      type: object
+      properties:
+        title:
+          type: string
+        envelope:
+          type: object
+          format: GeoJSON
+          description: Loaded GeoJSON rapresentation of the quadrilateral polygon containing the whole layer.
+        overlays_count:
+          type: integer
+          description: Number of times this layer has been overlaid on the map
+
+    Layer:
+      allOf:
+        - $ref: '#/components/schemas/LayerBase'
+        - type: object
+          properties:
+            id:
+              type: integer
+            created:
+              type: string
+              format: date-time
+
+    LayerDetails:
+      type: object
+      properties:
+        title:
+          type: string
+        notes:
+          type: string
+        rhodoneas:
+          type: array
+          items:
+            $ref: '#/components/schemas/RhodoneaDetails'
+
+    LayerDetailsForRead:
+      allOf:
+        - $ref: '#/components/schemas/Layer'
+        - type: object
+          properties:
+            notes:
+              type: string
+            rhodoneas:
+              type: array
+              items:
+                $ref: '#/components/schemas/RhodoneaForRead'

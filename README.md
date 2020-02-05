@@ -51,11 +51,23 @@ beautiful [rhodoneas](https://en.wikipedia.org/wiki/Rose_(mathematics\)) on
     }
     ```
 
+1. In your `settings.py` define the following constants:
+    - `RHODONEA_MAPPER_BASE_TEMPLATE_PATH`: The path to the base template to
+     extend e.g. `base.html`. This template must define a `body` block where
+      the code of this ap will be injected.
+    - `GOOGLEAPI_KEY`: This is the Google API key needed to access all Google
+     APIs one of which is Google Maps Api that this project requires. The key
+      can be obtained at this [link](https://developers.google.com/maps
+      /documentation/javascript/get-api-key#key). This is a secret key, make
+       sure it's not checked in your code repository.
 
 1. Include the rhodonea_mapper URLconf in your project `urls.py` like this::
     ```.py
     path('rhodonea-mapper/', include('rhodonea_mapper.urls')),
     ```
+
+1. Make sure you have a template called `base.html` in the templates root
+ that can be extended by this app. A block called `body` must be available.
 
 1. Install your requirements:
     ```.bash

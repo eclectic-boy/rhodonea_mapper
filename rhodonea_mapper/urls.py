@@ -7,5 +7,5 @@ from rhodonea_mapper.api import urls as api_urls
 
 urlpatterns = [
     path('api/', include(api_urls.urlpatterns)),
-    path('hello-world/', views.index, name='hello-world'),
+    path('', views.index, name='index'),
 ]

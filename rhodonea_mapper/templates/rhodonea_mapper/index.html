@@ -1,1 +1,226 @@
-Rhodonea Mapper Index
+{% extends settings.RHODONEA_MAPPER_BASE_TEMPLATE_PATH %}
+
+{% load static %}
+
+{% block body %}
+    <!-- CSS -->
+    <link
+        rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="{% static 'rhodonea_mapper/css/index.css' %}">
+
+    <!-- JS -->
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+        crossorigin="anonymous"
+    ></script>
+    <script src="https://underscorejs.org/underscore-min.js"></script>
+    <!-- Bootstrap-->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"
+    ></script>
+    <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"
+    ></script>
+    <!-- End Bootstrap-->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"
+        integrity="sha256-AdQN98MVZs44Eq2yTwtoKufhnU+uZ7v2kXnD5vqzZVo="
+        crossorigin="anonymous"
+    ></script>
+
+    <!-- Start Bootstrap Toggle-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <!-- End Bootstrap Toggle-->
+
+    <script src="{% static 'rhodonea_mapper/js/index.js' %}"></script>
+
+
+    <script async defer type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?libraries=geometry&callback=initRhodoneaMapper&key={{ settings.GOOGLE_API_KEY }}"
+    >
+    </script>
+
+
+    <div class="container" id="main_container">
+        <div class="row">
+            <div class="col-3" id="sidebar">
+
+                <div id="controls" class="sidebar_element">
+                    <div class="sx"></div>
+                    <div class="center">
+                        <a href="javascript:void(0);" id="showDrawer">
+                            <img class="handle" src="{% static 'rhodonea_mapper/img/rhodonea.png' %}"
+                                 title="Start drawing a new layer">
+                        </a>
+                    </div>
+                    <div class="dx">
+                        <i id="showHelp" class="fa fa-question-circle"></i>
+                    </div>
+                </div>
+
+                <div id="alert_error" class="hidden alert alert-danger" role="alert">
+                    <i class="fa fa-exclamation-circle"></i>
+                    <span class="msg"></span>
+                </div>
+
+                <div id="alert_success" class="hidden alert alert-success" role="alert">
+                    <span class="msg"></span>
+                </div>
+
+                <div id="drawer" class="hidden sidebar_element">
+
+                    <div class="column" id="list">
+                        <div class="buttons">
+                            <a href="javascript:void(0);" class="save" title="Save this layer"><i class="fa fa-floppy-o"></i></a>
+                            <a href="javascript:void(0);" class="reset" title="Reset"><i class="fa fa-trash"></i></a>
+                        </div>
+
+
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="title" placeholder="Draw your layer! Put here some notes and your credits... ;) Feel free to use hashtags!"></textarea>
+                        </div>
+
+                        <div class="list-group"></div>
+
+                        <a id="addItem" title="Add a new rhodonea" href="javascript:void(0);"><i class="fa fa-plus"></i></a>
+                    </div>
+
+                    <form class="column" action="javascript:void(0);" id="form">
+                        <input type="submit">
+                        <div class="buttons">
+                            <a href="javascript:void(0);" class="save" title="Save this rhodonea"><i class="fa fa-check"></i></a>
+                            <a href="javascript:void(0);" class="discard" title="Discard the changes"><i class="fa fa-times"></i></a>
+                            <a href="javascript:void(0);" class="random" title="Place random parameters"><i class="fa fa-random"></i></a>
+                            <a href="javascript:void(0);" class="refresh" title="Refresh"><i class="fa fa-refresh"></i></a>
+                        </div>
+
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">Name</span>
+                            <input type="text" name="name" class="form-control" placeholder="My Rhodonea" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="Radius in meters of this rhodonea. Type a higher value for a larger shape" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">R</span>
+                            <input type="number" name="r" class="form-control" value="1000" step="1" placeholder="Circle radius" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="`n` parameter for this rhodonea. Combined to the `d` parameter you can get a particular shape" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">n</span>
+                            <input type="number" name="n" class="form-control" value="1" step="1" placeholder="n parameter" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="`d` parameter for this rhodonea. Combined to the `n` parameter you can get a particular shape" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">d</span>
+                            <input type="number" name="d" class="form-control" value="1" step="1" placeholder="d parameter" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="Longitude of the centre of this rhodonea" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Lng</span>
+                            <input type="number" name="lng" class="form-control" step="0.000001" placeholder="Center longitude" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                            <span class="input-group-addon">
+                                <a href="javascript:void(0);" title="Lock/unlock the coordinates"><i class="fa coordinateLock fa-unlock-alt"></i></a>
+                            </span>
+                        </div>
+                        <div class="input-group input-group-sm" title="Latitude of the centre of this rhodonea" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Lat</span>
+                            <input type="number" name="lat" class="form-control" step="0.000001" placeholder="Center latitude" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                            <span class="input-group-addon">
+                                <a href="javascript:void(0);" title="Lock/unlock the coordinates"><i class="fa coordinateLock fa-unlock-alt"></i></a>
+                            </span>
+                        </div>
+                        <div class="input-group input-group-sm"  title="Number of discretization nodes. Type a higher number for a more realistic shape" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Nodes</span>
+                            <input type="number" name="nodes_count" class="form-control" value="1000" min="0" step="1" placeholder="Nodes number" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm"  title="Rotation in grades to apply to this rhodonea. The angle is computed clock-wise" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Rotation</span>
+                            <input type="number" name="rotation" class="form-control" value="0" step="1" placeholder="Rotation" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="Color of this rhodonea" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Color</span>
+                            <input type="color" name="strokeColor" class="form-control" value="#311807" placeholder="Radius of the circle" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                        <div class="input-group input-group-sm" title="Thickness of the stroke in pixels" data-toggle="tooltip" data-placement="top">
+                            <span class="input-group-addon">Weight</span>
+                            <input type="number" name="strokeWeight" class="form-control" value="2" min="0" step="1" placeholder="Weight" required>
+{#                            <div class="invalid-feedback">This field is required</div>#}
+                        </div>
+                    </form>
+                </div>
+                <div id="timeline" class="sidebar_element">
+                    <div class="title">Layers in this bounding box</div>
+                    <div id="items"></div>
+                    <div id="more">
+                        <a href="javascript:void(0);">More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-9" id="map"></div>
+        </div>
+    </div>
+
+
+
+
+
+    <div id="helpModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Welcome to Rhodonea Mapper</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <strong>Rhodonea Mapper</strong> is a social game that allows you to draw and post a lot of beautiful <a
+                            href='https://en.wikipedia.org/wiki/Rose_(mathematics)'
+                            target=_blank><strong>rhodoneas</strong></a> on Google Maps.
+                    </p>
+                    <p>
+                        On the left-hand-side you can find the <strong>timeline</strong> which collects all the layers posted
+                        by users in the current map bounding box. If you zoom or pan the map then the content of the timeline is updated accordingly.
+                    </p>
+                    <p>
+                        Every item in the timeline has a <strong>toggle</strong> which allows you to show its
+                        layer.
+                    </p>
+                    <p>
+                        For <strong>creating a new layer</strong> you simply need to click on the icon at the top of the
+                        timeline
+                        <img style="height: 2em;" src="{% static 'rhodonea_mapper/img/rhodonea.png' %}"> and <strong>add</strong> as many rhodoneas as you wish.
+                        You can also <strong>customize</strong> them as you please by changing their parameters in the form shown. A <strong>live
+                        preview</strong> is available for checking your changes whilst you are making them. Hover the mouse over every parameter to
+                        show more info.
+                    </p>
+                    <p>
+                        When you are happy with the composition you've drawn please <strong>add some description</strong> and then
+                        <strong>save it</strong> (<i class="fa fa-floppy-o"></i>).
+                    </p>
+                    <p>
+                        Have fun!
+                    </p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+{% endblock %}

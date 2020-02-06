@@ -452,6 +452,10 @@ class DrawerForm {
     return color.join("");
   }
 
+  clearName() {
+    this.node.find("[name='name']").val("");
+  }
+
   setRandomFormData() {
     this.node.find("[name='r']").val(_.random(1000, 4000));
     this.node.find("[name='n']").val(_.random(1, 20));
@@ -616,6 +620,7 @@ class Drawer {
         } else {
           //set default values
           me.form.setRandomFormData();
+          me.form.clearName();
           me.lockCoordinates(false);
         }
 

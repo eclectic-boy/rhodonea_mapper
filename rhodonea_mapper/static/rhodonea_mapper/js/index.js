@@ -646,7 +646,9 @@ class Drawer {
 		let tl = this.rhodoneaMapper.timeline;
 		tl.enable();
 
-		tl.refresh({showIds});
+		if(!this.rhodoneaMapper.booting) {
+      tl.refresh({showIds});
+    }
 		tl.node.fadeIn();
 
 		this.isLoaded = false;
@@ -676,7 +678,6 @@ class Timeline {
     this.rhodoneaMapper = rhodoneaMapper;
     this.node = $("#timeline");
     this.isActive = true;
-    this.mapEvent;
     this.filters = {
       search: "",
       in_bbox: "",
@@ -693,18 +694,6 @@ class Timeline {
 
   setUpUI() {
     let me = this;
-
-    this.mapEvent = google.maps.event.addListener(  // TODO move this to rhodoneaMapper
-      this.rhodoneaMapper.map,
-      "idle",
-      function(event) {
-        me.filters.offset = 0;
-        me.filters.in_bbox = me.rhodoneaMapper.getMapBoundsString();
-        me.refresh();
-      }
-    );
-    google.maps.event.trigger(this.rhodoneaMapper.map, "idle");
-
 
     this.node.find("#more a").click(function() {
       let nextUrl = $(this).attr("next");
@@ -732,6 +721,11 @@ class Timeline {
       envelope.coordinates[0][2][0],
       envelope.coordinates[0][2][1],
     ].join(",");
+  }
+
+  updateInBboxFilter() {
+    this.filters.offset = 0;
+    this.filters.in_bbox = this.rhodoneaMapper.getMapBoundsString();
   }
 
 	buildItem(args) {
@@ -923,6 +917,9 @@ class RhodoneaMapper {
   };
 
   constructor(callback) {
+    this.booting = true;
+
+    this.mapEvent;
     this.mapNode = $("#map");
 		this.map = new google.maps.Map(this.mapNode.get(0), {
 			center: { lng: -0.12, lat: 51.50 },
@@ -996,6 +993,16 @@ class RhodoneaMapper {
 		$("#showHelp").click(function() {
 			$("#helpModal").modal();
 		});
+
+		this.mapEvent = google.maps.event.addListener(
+      this.map,
+      "idle",
+      function(event) {
+        me.timeline.updateInBboxFilter();
+        me.timeline.refresh();
+      }
+    );
+
     this.loader.triggerEvents();
 	}
 
@@ -1121,7 +1128,9 @@ class RhodoneaMapper {
 
 
 function initRhodoneaMapper() {
-  function callback() {}
+  function callback(rhodoneaMapper) {
+    rhodoneaMapper.booting = false;
+  }
 
   window.rhodoneaMapper = new RhodoneaMapper(callback);
 }

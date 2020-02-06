@@ -299,7 +299,12 @@ class DrawerForm {
 
     this.node.find(".buttons .discard").click(function () {
       if (confirm("Do you really want to discard the changes?")) {
-        me.node.find(".buttons .refresh").trigger("click", [me.drawer.backup]);
+        if(!$.isEmptyObject(me.drawer.backup)) {
+          me.node.find(".buttons .refresh").trigger("click", [me.drawer.backup]);
+        } else {
+          me.drawer.removeCurrentFeature();
+          me.drawer.currentItem.removeAttr("_id");
+        }
         me.drawer.goToList();
       }
     });
@@ -350,13 +355,11 @@ class DrawerForm {
   validateForm(submitting = false) {
     let input;
 
-    if (submitting === true) {
-      input = this.getInput("name");
-      if (input.val() === "") {
-        this.makeInputInvalid(input);
-      } else {
-        this.makeInputValid(input);
-      }
+    input = this.getInput("name");
+    if (submitting && input.val() === "") {
+      this.makeInputInvalid(input);
+    } else {
+      this.makeInputValid(input);
     }
 
     input = this.getInput("r");
@@ -534,8 +537,8 @@ class Drawer {
     this.list.hide();
   }
 
-  refresh(backup) {
-    let args = backup === undefined ? this.form.collectData() : backup;
+  refresh(backup={}) {
+    let args = $.isEmptyObject(backup) ? this.form.collectData() : backup;
     let rh = this.rhodoneaMapper.buildRhodonea(args);
 
     if (!this.currentFeature) {
@@ -609,6 +612,7 @@ class Drawer {
     `)
       .click(function () {
         me.currentItem = $(this);
+        me.backup = {};
 
         let _id = me.currentItem.attr("_id");
 
@@ -617,6 +621,11 @@ class Drawer {
           me.currentFeature = me.layerInstance.getFeature(_id);
           me.lockCoordinates(true);
           me.form.setFeatureData(me.currentFeature);
+
+          //back-up original properties in form
+          for (let key of Object.keys(me.DEFAULTS)) {
+            me.backup[key] = me.currentFeature.getProperty(key);
+          }
         } else {
           //set default values
           me.form.setRandomFormData();
@@ -625,12 +634,6 @@ class Drawer {
         }
 
         me.refresh();
-
-        //back-up original properties in form
-        me.backup = {};
-        for (let key of Object.keys(me.DEFAULTS)) {
-          me.backup[key] = me.currentFeature.getProperty(key);
-        }
 
         me.goToForm();
       })
@@ -649,6 +652,13 @@ class Drawer {
     });
 
     this.list.appendItem(item);
+  }
+
+  removeCurrentFeature() {
+    if(this.currentFeature) {
+      this.layerInstance.removeFeature(this.currentFeature);
+      this.currentFeature = null;
+    }
   }
 
   startCenterTracking() {

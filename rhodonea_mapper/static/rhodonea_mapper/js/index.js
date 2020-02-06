@@ -869,7 +869,7 @@ class Timeline {
           let ctrl = me.node.find(`#items .switch[layerName="${layerName}"]`);
 
           if (ctrl.length) {
-            ctrl.bootstrapToggle('on');
+            ctrl.data("bs.toggle").on(true);
           } else {
             me.rhodoneaMapper.layersManager.dropLayer(layerName);
           }

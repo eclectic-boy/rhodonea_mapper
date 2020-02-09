@@ -1043,10 +1043,6 @@ class RhodoneaMapper {
 
     $(".alert").hide();
 
-    $("#showHelp").click(function () {
-      $("#helpModal").modal();
-    });
-
     this.mapEvent = google.maps.event.addListener(
       this.map,
       "idle",
@@ -1057,6 +1053,10 @@ class RhodoneaMapper {
     );
 
     this.loader.triggerEvents();
+
+    $("#showHelp").click(function () {
+      $("#helpModal").modal();
+    }).trigger('click');
   }
 
   getMapBounds() {

@@ -82,6 +82,11 @@ beautiful [rhodoneas](https://en.wikipedia.org/wiki/Rose_(mathematics\)) on
 1. Visit `/rhodonea_mapper/` to access the tool.
 
 
+## Management commands
+
+ - `rhodonea_mapper_reset_db` Delete current Layers and create random ones.
+
+
 ## Development
 
 [Development](rhodonea_mapper/docs/development.md)
